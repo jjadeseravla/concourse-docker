@@ -24,6 +24,9 @@ ENV CONCOURSE_WORKER_GARDEN_DNS_PROXY_ENABLE  true
 ENV CONCOURSE_WORK_DIR                /worker-state
 ENV CONCOURSE_WORKER_WORK_DIR         /worker-state
 
+# make `ctr` target the default concourse namespace
+ENV CONTAINERD_NAMESPACE=concourse
+
 # volume for non-aufs/etc. mount for baggageclaim's driver
 VOLUME /worker-state
 
@@ -32,7 +35,8 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     dumb-init \
     iproute2 \
-    file
+    file \
+    iptables
 
 COPY --from=assets /usr/local/concourse /usr/local/concourse
 
